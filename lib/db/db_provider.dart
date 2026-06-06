@@ -25,6 +25,18 @@ class DBProvider {
     return _database!;
   }
 
+    // Retorna tots els registres guardats
+  Future<List<ScanModel>> getTotsScans() async {
+
+    final db = await database;
+
+    final res = await db.query('Scans');
+
+    return res.isNotEmpty
+        ? res.map((e) => ScanModel.fromMap(e)).toList()
+        : [];
+  }
+
   // Inicialització de la base de dades
   Future<Database> initDB() async {
 
