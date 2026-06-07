@@ -79,7 +79,7 @@ class DBProvider {
     );
   }
 
-    // Elimina tots els registres de la base de dades
+    // Elimina tots els registres de la base de dades de les dues llistes
   Future<int> deleteAll() async {
 
     final db = await database;
