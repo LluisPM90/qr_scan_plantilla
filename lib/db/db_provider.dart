@@ -78,4 +78,12 @@ class DBProvider {
       scan.toMap(),
     );
   }
+
+    // Elimina tots els registres de la base de dades
+  Future<int> deleteAll() async {
+
+    final db = await database;
+
+    return await db.delete('Scans');
+  }
 }
