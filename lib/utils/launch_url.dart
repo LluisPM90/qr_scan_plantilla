@@ -3,20 +3,28 @@ import 'package:qr_scan/model/scan_model.dart';
 
 class LaunchURL {
 
-  // Obre una URL al navegador
   static Future<void> obrirScan(ScanModel scan) async {
 
-    // Si és una URL web
-    if (scan.tipus == 'http') {
+    print('TIPUS: ${scan.tipus}');
+    print('VALOR: ${scan.valor}');
 
-      final uri = Uri.parse(scan.valor);
+    Uri uri;
 
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(
-          uri,
-          mode: LaunchMode.externalApplication,
-        );
-      }
+    if (scan.valor.startsWith('http://') ||
+        scan.valor.startsWith('https://')) {
+
+      uri = Uri.parse(scan.valor);
+
+    } else {
+
+      uri = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=${scan.latitud},${scan.longitud}',
+      );
     }
+
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }

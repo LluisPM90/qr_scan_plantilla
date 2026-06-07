@@ -1,35 +1,47 @@
 class ScanModel {
 
-  // Identificador únic del registre
+  // Identificador del registre
   int? id;
 
-  // Tipus de QR (http o geo)
+  // Tipus del QR: http o geo
   String tipus;
 
-  // Contingut del QR
+  // Valor llegit del QR
   String valor;
 
-  // Constructor
   ScanModel({
     this.id,
-    required this.valor,
-  })
-
-      // Detectam automàticament el tipus
-      : tipus = valor.startsWith('http')
+    required String valor,
+  })  : valor = valor.trim(),
+        tipus = valor.trim().toLowerCase().startsWith('http')
             ? 'http'
             : 'geo';
 
-  // Converteix un Map de SQLite a un objecte ScanModel
+  // Retorna la latitud
+  double get latitud {
+    final coords = valor.substring(4).split(',');
+    return double.parse(coords[0]);
+  }
+
+  // Retorna la longitud
+  double get longitud {
+    final coords = valor.substring(4).split(',');
+    return double.parse(coords[1]);
+  }
+
   factory ScanModel.fromMap(Map<String, dynamic> json) => ScanModel(
         id: json['id'],
         valor: json['valor'],
       );
 
-  // Converteix l'objecte a Map per guardar-lo a SQLite
   Map<String, dynamic> toMap() => {
         'id': id,
         'tipus': tipus,
         'valor': valor,
       };
+
+  @override
+  String toString() {
+    return 'ScanModel(id: $id, tipus: $tipus, valor: $valor)';
+  }
 }
